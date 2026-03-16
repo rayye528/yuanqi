@@ -100,7 +100,6 @@ body{background:#f5f7fa;padding:20px}
   cursor:not-allowed;
 }
 
-/* 居中成功提示 */
 #successToast{
   position:fixed;
   top:50%;
@@ -152,19 +151,17 @@ body{background:#f5f7fa;padding:20px}
   </div>
 </div>
 
-<!-- 居中成功提示 -->
 <div id="successToast">提交成功</div>
 
 <script>
-function submitData() {
+async function submitData() {
   const btn = document.getElementById('submitBtn');
   const toast = document.getElementById('successToast');
 
-  // 按钮变灰，禁止重复点击
   btn.disabled = true;
   btn.innerText = "提交中...";
 
-  var data = {
+  const data = {
     dramaName: document.getElementById('dramaName').value,
     totalEpisodes: document.getElementById('totalEpisodes').value,
     totalDuration: document.getElementById('totalDuration').value,
@@ -177,22 +174,20 @@ function submitData() {
     submitTime: new Date().toLocaleString()
   };
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://script.google.com/macros/s/AKfycbzxHwXJ2ZlxMb9WhC6nJzH6kZJZk8Z0X7H6kZJZk8/exec', true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify(data));
+  try {
+    await fetch('https://yuanqi-manju.pages.dev/api/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch (e) {}
 
-  // 模拟提交成功
+  toast.style.display = 'block';
   setTimeout(() => {
-    // 屏幕中间显示成功
-    toast.style.display = 'block';
-    // 2秒后消失
-    setTimeout(() => {
-      toast.style.display = 'none';
-      btn.disabled = false;
-      btn.innerText = "提交投稿";
-    }, 2000);
-  }, 1000);
+    toast.style.display = 'none';
+    btn.disabled = false;
+    btn.innerText = "提交投稿";
+  }, 2000);
 }
 </script>
 </body>
