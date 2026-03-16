@@ -33,7 +33,7 @@ th{background:#f8f9fa}
     <table>
       <thead>
         <tr>
-          <th>序号</th><th>剧名</th><th>集数</th><th>时长(分)</th><th>男主</th><th>女主</th><th>网盘链接</th><th>提交时间</th>
+          <th>序号</th><th>剧名</th><th>集数</th><th>时长</th><th>男主</th><th>女主</th><th>网盘链接</th><th>提交时间</th>
         </tr>
       </thead>
       <tbody id="list"></tbody>
@@ -42,50 +42,55 @@ th{background:#f8f9fa}
 </div>
 
 <script>
-function login() {
+let allData = [];
+
+async function login() {
   const u = document.getElementById('user').value;
   const p = document.getElementById('pwd').value;
   if (u === 'yuanqi2026' && p === 'yuanqi2026') {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('main').style.display = 'block';
-    loadData();
+    await loadData();
   } else {
     alert('账号或密码错误');
   }
 }
 
-function loadData() {
-  fetch('https://script.google.com/macros/s/AKfycbwXcQ8Z0X7H6kZJZk8Z0X7H6kZJZk8Z0X7H6kZJZk8/exec?list=1')
-    .then(res => res.json())
-    .then(data => {
-      let html = '';
-      data.forEach((item, i) => {
-        html += `<tr>
-          <td>${i+1}</td>
-          <td>${item.dramaName}</td>
-          <td>${item.totalEpisodes}</td>
-          <td>${item.totalDuration}</td>
-          <td>${item.maleLeadName}</td>
-          <td>${item.femaleLeadName}</td>
-          <td><a href="${item.netdiskLink}" target="_blank">打开</a></td>
-          <td>${item.submitTime}</td>
-        </tr>`;
-      });
-      document.getElementById('list').innerHTML = html;
-    });
+async function loadData() {
+  try {
+    const res = await fetch('https://yuanqi-manju.pages.dev/api/list');
+    allData = await res.json();
+  } catch (e) {
+    allData = [];
+  }
+
+  let html = '';
+  allData.forEach((item, i) => {
+    html += `<tr>
+      <td>${i+1}</td>
+      <td>${item.dramaName}</td>
+      <td>${item.totalEpisodes}</td>
+      <td>${item.totalDuration}</td>
+      <td>${item.maleLeadName}</td>
+      <td>${item.femaleLeadName}</td>
+      <td><a href="${item.netdiskLink}" target="_blank">打开</a></td>
+      <td>${item.submitTime}</td>
+    </tr>`;
+  });
+  document.getElementById('list').innerHTML = html;
 }
 
 function exportData() {
-  fetch('https://script.google.com/macros/s/AKfycbwXcQ8Z0X7H6kZJZk8Z0X7H6kZJZk8Z0X7H6kZJZk8/exec?export=1')
-    .then(res => res.blob())
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = '元启漫剧投稿数据.csv';
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
+  let csv = '序号,剧名,集数,时长,男主,女主,网盘链接,提交时间\n';
+  allData.forEach((item, i) => {
+    csv += `${i+1},${item.dramaName},${item.totalEpisodes},${item.totalDuration},${item.maleLeadName},${item.femaleLeadName},${item.netdiskLink},${item.submitTime}\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '元启漫剧投稿数据.csv';
+  a.click();
 }
 </script>
 </body>
