@@ -1,9 +1,10 @@
 ---
 name: 元启漫剧投稿
 about: 用户投稿专用
-title: "投稿："
-labels: 投稿
+title: 投稿：
+labels: ''
 assignees: ''
+
 ---
 
 ## 剧名
