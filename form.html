@@ -4,190 +4,82 @@
 <meta charset="UTF-8">
 <title>元启漫剧 投稿表单</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Microsoft YaHei,sans-serif}
 body{background:#f5f7fa;padding:20px}
-.page-title{text-align:center;font-size:28px;font-weight:600;color:#2c3e50;margin:30px 0}
-
-.container{
-  max-width:1000px;
-  margin:0 auto;
-  display:flex;
-  gap:25px;
-  background:#fff;
-  padding:30px;
-  border-radius:12px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.08);
-}
-
-.rules-box{
-  flex:1;
-  background:#fef2f2;
-  padding:25px;
-  border:1px solid #ffebee;
-  border-radius:8px;
-}
-
-.rules-box .title{
-  font-size:18px;
-  font-weight:bold;
-  color:#d32f2f;
-  margin-bottom:20px;
-  text-align:center;
-}
-
-.rules-box .text{
-  color:#d32f2f;
-  font-size:15px;
-  line-height:1.8;
-  margin-bottom:20px;
-}
-
-.rules-box .img-note{
-  font-size:14px;
-  color:#666;
-  margin-top:15px;
-  text-align:center;
-  font-weight:500;
-}
-
-.rules-box img{
-  width:100%;
-  border-radius:8px;
-  display:block;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-.form-box{
-  flex:2;
-}
-
-.form-box .item{
-  margin-bottom:20px;
-}
-
-.form-box label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:600;
-  color:#333;
-  font-size:16px;
-}
-
-.form-box input, .form-box textarea{
-  width:100%;
-  padding:15px;
-  border:1px solid #bdc3c7;
-  border-radius:8px;
-  font-size:16px;
-  resize:none;
-  outline:none;
-}
-
-.form-box textarea{min-height:120px;}
-
-.btn-area{text-align:center;margin-top:30px}
-#submitBtn{
-  padding:16px 60px;
-  background:#27ae60;
-  color:white;
-  border:none;
-  border-radius:8px;
-  font-size:18px;
-  cursor:pointer;
-}
-#submitBtn:disabled{
-  background:#95a5a6;
-  cursor:not-allowed;
-}
-
-#successToast{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:rgba(0,0,0,0.75);
-  color:#fff;
-  padding:20px 40px;
-  border-radius:10px;
-  font-size:18px;
-  display:none;
-  z-index:9999;
-}
+.page-title{text-align:center;font-size:28px;margin:30px 0}
+.container{max-width:1000px;margin:0 auto;display:flex;gap:25px;background:#fff;padding:30px;border-radius:12px}
+.rules-box{flex:1;background:#fef2f2;padding:25px;border-radius:8px;color:#d32f2f}
+.rules-box .title{font-weight:bold;margin-bottom:15px;text-align:center}
+.rules-box .text{line-height:1.8}
+.form-box{flex:2}
+.item{margin-bottom:20px}
+label{display:block;margin-bottom:8px;font-weight:bold}
+input,textarea{width:100%;padding:15px;border:1px solid #ddd;border-radius:8px;font-size:16px}
+textarea{min-height:120px}
+#submitBtn{padding:16px 60px;background:#27ae60;color:#fff;border:none;border-radius:8px;font-size:18px;cursor:pointer}
+#submitBtn:disabled{background:#999}
+#toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#000c;color:#fff;padding:20px 40px;border-radius:10px;display:none}
 </style>
 </head>
 <body>
-
 <h1 class="page-title">元启漫剧 投稿表单</h1>
-
 <div class="container">
   <div class="rules-box">
-    <div class="title">📋 投稿规范</div>
+    <div class="title">投稿规范</div>
     <div class="text">
       每集不能超过500MB<br>
-      每集命名格式必须是:XX第1集，XX-第2集<br><br>
-      视频中不允许有任何水印<br>
-      每集视频码率大于4码率，1080P，CBR（静态比特率）<br><br>
-      网盘内容需包含：<br>
-      视频素材、10张工程文件、剧集封面、<br>
-      上方填写的对应人物形象照（每人一张）
+      命名：XX第1集、XX-第2集<br>
+      无水印、1080P、码率>4、CBR<br>
+      网盘包含：视频、工程文件10张、封面、人物形象照
     </div>
-    <div class="img-note">导出设置参考示例：</div>
-    <img src="https://p.qqan.com/up/2021-3/16148453246629196.png" alt="导出设置示例">
   </div>
-
   <div class="form-box">
-    <div class="item"><label>剧名 *</label><input id="dramaName"></div>
-    <div class="item"><label>总集数 *</label><input id="totalEpisodes"></div>
-    <div class="item"><label>总时长(分钟) *</label><input id="totalDuration"></div>
-    <div class="item"><label>男主名 *</label><input id="maleLeadName"></div>
-    <div class="item"><label>男主简介 *</label><textarea id="maleLeadIntro"></textarea></div>
-    <div class="item"><label>女主名 *</label><input id="femaleLeadName"></div>
-    <div class="item"><label>女主简介 *</label><textarea id="femaleLeadIntro"></textarea></div>
-    <div class="item"><label>视频简介 *</label><textarea id="videoIntro"></textarea></div>
-    <div class="item"><label>网盘链接 *</label><input id="netdiskLink"></div>
-    <div class="btn-area">
-      <button id="submitBtn" onclick="submitData()">提交投稿</button>
-    </div>
+    <div class="item"><label>剧名</label><input id="dramaName"></div>
+    <div class="item"><label>总集数</label><input id="totalEpisodes"></div>
+    <div class="item"><label>总时长(分钟)</label><input id="totalDuration"></div>
+    <div class="item"><label>男主名</label><input id="maleLeadName"></div>
+    <div class="item"><label>男主简介</label><textarea id="maleLeadIntro"></textarea></div>
+    <div class="item"><label>女主名</label><input id="femaleLeadName"></div>
+    <div class="item"><label>女主简介</label><textarea id="femaleLeadIntro"></textarea></div>
+    <div class="item"><label>视频简介</label><textarea id="videoIntro"></textarea></div>
+    <div class="item"><label>网盘链接</label><input id="netdiskLink"></div>
+    <button id="submitBtn" onclick="submit()">提交投稿</button>
   </div>
 </div>
-
-<div id="successToast">提交成功</div>
+<div id="toast">提交成功</div>
 
 <script>
-async function submitData() {
-  const btn = document.getElementById('submitBtn');
-  const toast = document.getElementById('successToast');
+const API = "https://yuanqi-manju.pages.dev/api/add";
 
+async function submit() {
+  const btn = document.getElementById("submitBtn");
+  const toast = document.getElementById("toast");
   btn.disabled = true;
   btn.innerText = "提交中...";
 
   const data = {
-    dramaName: document.getElementById('dramaName').value,
-    totalEpisodes: document.getElementById('totalEpisodes').value,
-    totalDuration: document.getElementById('totalDuration').value,
-    videoIntro: document.getElementById('videoIntro').value,
-    maleLeadName: document.getElementById('maleLeadName').value,
-    maleLeadIntro: document.getElementById('maleLeadIntro').value,
-    femaleLeadName: document.getElementById('femaleLeadName').value,
-    femaleLeadIntro: document.getElementById('femaleLeadIntro').value,
-    netdiskLink: document.getElementById('netdiskLink').value,
+    dramaName: document.getElementById("dramaName").value,
+    totalEpisodes: document.getElementById("totalEpisodes").value,
+    totalDuration: document.getElementById("totalDuration").value,
+    maleLeadName: document.getElementById("maleLeadName").value,
+    maleLeadIntro: document.getElementById("maleLeadIntro").value,
+    femaleLeadName: document.getElementById("femaleLeadName").value,
+    femaleLeadIntro: document.getElementById("femaleLeadIntro").value,
+    videoIntro: document.getElementById("videoIntro").value,
+    netdiskLink: document.getElementById("netdiskLink").value,
     submitTime: new Date().toLocaleString()
   };
 
-  try {
-    await fetch('https://yuanqi-manju.pages.dev/api/add', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-  } catch (e) {}
+  await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
 
-  toast.style.display = 'block';
-  setTimeout(() => {
-    toast.style.display = 'none';
-    btn.disabled = false;
-    btn.innerText = "提交投稿";
-  }, 2000);
+  toast.style.display = "block";
+  setTimeout(() => toast.style.display = "none", 2000);
+  btn.disabled = false;
+  btn.innerText = "提交投稿";
 }
 </script>
 </body>
