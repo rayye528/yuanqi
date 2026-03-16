@@ -83,7 +83,7 @@ function submit() {
   `;
 
   // 跳转到 GitHub 新建 Issue 页面（自动填好内容）
-  const url = new URL("https://github.com/rayye528/yuanqi-manju/issues/new");
+  const url = new URL("https://github.com/rayye528/yuanqi/issues/new");
   url.searchParams.append("title", "投稿：" + dramaName);
   url.searchParams.append("body", body);
 
